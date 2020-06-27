@@ -1,7 +1,9 @@
 package com.example.todolist.repository.mapper.implement;
 
 import com.example.todolist.dto.ToDo;
+import com.example.todolist.repository.dao.UserRepository;
 import com.example.todolist.repository.entity.ToDoVo;
+import com.example.todolist.repository.entity.UserVo;
 import com.example.todolist.repository.mapper.ToDoMapper;
 import com.example.todolist.repository.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,9 @@ public class ToDoMapperImpl implements ToDoMapper {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public ToDo convert(ToDoVo source) {
@@ -26,6 +31,9 @@ public class ToDoMapperImpl implements ToDoMapper {
 
     @Override
     public ToDoVo revert(ToDo result) {
+
+        UserVo user = userRepository.getOne(result.getUser().getId());
+
         return ToDoVo.builder()
                 .id(result.getId())
                 .title(result.getTitle())
